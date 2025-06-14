@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quota Diēs Protein Calculator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #fdfcf9;
+      padding: 2rem;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #3b3b3b;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+    select, input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .result {
+      margin-top: 2rem;
+      background: #fff3db;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      color: #3b3b3b;
+    }
+    .diff-positive {
+      color: green;
+    }
+    .diff-negative {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Quota Diēs — Protein Calculator</h2>
+
+  <label for="weight">Weight (kg):</label>
+  <input type="number" id="weight" min="30" max="200" placeholder="e.g. 70">
+
+  <label for="activity">Activity Level:</label>
+  <select id="activity">
+    <option value="1.0">Low (1.0 g/kg)</option>
+    <option value="1.3">Moderate (1.3 g/kg)</option>
+    <option value="1.6">Active (1.6 g/kg)</option>
+    <option value="2.0">Athletic (2.0 g/kg)</option>
+  </select>
+
+  <div class="result" id="output">Enter your weight and activity to calculate</div>
+
+  <label for="esmorzar">Esmorzar</label>
+  <select id="esmorzar">
+    <option value="0">-- Selecciona plat --</option>
+    <option value="0.038">Iogurt natural</option>
+    <option value="0.075">Mató</option>
+    <option value="0.013">Llet vegetal</option>
+    <option value="0.045">Porridge</option>
+    <option value="0.045">Torrades amb alvocat</option>
+    <option value="0.030">Fruita amb llavors</option>
+    <option value="0.020">Smoothie</option>
+    <option value="0.070">Pa integral amb oli</option>
+    <option value="0.025">Cafè amb llet</option>
+  </select>
+  <input type="number" id="quantitatEsmorzar" placeholder="Quantitat (g)">
+
+  <label for="dinar">Dinar</label>
+  <select id="dinar">
+    <option value="0">-- Selecciona plat --</option>
+    <option value="0.020">Crema de verdures</option>
+    <option value="0.100">Truita de patates</option>
+    <option value="0.030">Arròs amb verdures</option>
+    <option value="0.080">Amanida de llenties</option>
+    <option value="0.200">Pollastre al forn amb verdures</option>
+    <option value="0.070">Escudella</option>
+    <option value="0.080">Quinoa amb hortalisses</option>
+    <option value="0.180">Peix al forn + puré de patata</option>
+    <option value="0.070">Amanida de cigrons</option>
+    <option value="0.050">Pasta amb tomàquet natural</option>
+  </select>
+  <input type="number" id="quantitatDinar" placeholder="Quantitat (g)">
+
+  <label for="berenar">Berenar</label>
+  <select id="berenar">
+    <option value="0">-- Selecciona plat --</option>
+    <option value="0.070">Iogurt + Quota + fruita</option>
+    <option value="0.030">Smoothie vegetal</option>
+    <option value="0.060">Galetes integrals + llet</option>
+    <option value="0.020">Infusió amb Quota</option>
+    <option value="0.100">Mató + mel + Quota</option>
+    <option value="0.040">Batut de fruita i llavors</option>
+  </select>
+  <input type="number" id="quantitatBerenar" placeholder="Quantitat (g)">
+
+  <label for="sopar">Sopar</label>
+  <select id="sopar">
+    <option value="0">-- Selecciona plat --</option>
+    <option value="0.050">Crema de carbassó amb Quota</option>
+    <option value="0.030">Puré de pastanaga</option>
+    <option value="0.100">Truita d’espinacs</option>
+    <option value="0.025">Sopa de verdures</option>
+    <option value="0.120">Amanida amb ou dur</option>
+    <option value="0.180">Pollastre + verdura</option>
+    <option value="0.200">Sardines + verdura</option>
+    <option value="0.150">Ou remenat amb bolets</option>
+    <option value="0.060">Pasta integral amb oli</option>
+  </select>
+  <input type="number" id="quantitatSopar" placeholder="Quantitat (g)">
+
+  <div class="result" id="resultat">
+    Introdueix les dades per veure la proteïna total estimada.
+  </div>
+  <div class="result" id="diferencia"></div>
+
+  <script>
+    const weightInput = document.getElementById("weight");
+    const activityInput = document.getElementById("activity");
+    const outputDiv = document.getElementById("output");
+    const diferenciaDiv = document.getElementById("diferencia");
+
+    let quotaTarget = 0;
+
+    function calculateProtein() {
+      const weight = parseFloat(weightInput.value);
+      const factor = parseFloat(activityInput.value);
+
+      if (!isNaN(weight) && !isNaN(factor)) {
+        quotaTarget = (weight * factor).toFixed(1);
+        const scoops = (quotaTarget / 15).toFixed(1);
+        outputDiv.textContent = `${quotaTarget} g of protein/day ≈ ${scoops} scoops of Quota Diēs`;
+        calcularTotalProteina();
+      } else {
+        outputDiv.textContent = "Enter your weight and activity to calculate";
+        diferenciaDiv.textContent = "";
+      }
+    }
+
+    weightInput.addEventListener("input", calculateProtein);
+    activityInput.addEventListener("change", calculateProtein);
+
+    const esmorzarSelect = document.getElementById("esmorzar");
+    const quantitatEsmorzar = document.getElementById("quantitatEsmorzar");
+    const dinarSelect = document.getElementById("dinar");
+    const quantitatDinar = document.getElementById("quantitatDinar");
+    const soparSelect = document.getElementById("sopar");
+    const quantitatSopar = document.getElementById("quantitatSopar");
+    const berenarSelect = document.getElementById("berenar");
+    const quantitatBerenar = document.getElementById("quantitatBerenar");
+    const resultat = document.getElementById("resultat");
+
+    function calcularTotalProteina() {
+      const pe = parseFloat(esmorzarSelect.value) || 0;
+      const qe = parseFloat(quantitatEsmorzar.value) || 0;
+      const pd = parseFloat(dinarSelect.value) || 0;
+      const qd = parseFloat(quantitatDinar.value) || 0;
+      const ps = parseFloat(soparSelect.value) || 0;
+      const qs = parseFloat(quantitatSopar.value) || 0;
+      const pb = parseFloat(berenarSelect.value) || 0;
+      const qb = parseFloat(quantitatBerenar.value) || 0;
+
+      const total = (pe * qe + pd * qd + ps * qs + pb * qb).toFixed(1);
+      resultat.textContent = `Proteïna total estimada: ${total} g`;
+
+      if (quotaTarget > 0) {
+        const diff = (total - quotaTarget).toFixed(1);
+        if (diff >= 0) {
+          diferenciaDiv.innerHTML = `Diferència respecte la quota: <span class="diff-positive">+${diff} g</span>`;
+        } else {
+          diferenciaDiv.innerHTML = `Diferència respecte la quota: <span class="diff-negative">${diff} g</span>`;
+        }
+      } else {
+        diferenciaDiv.textContent = "";
+      }
+    }
+
+    esmorzarSelect.addEventListener("change", calcularTotalProteina);
+    quantitatEsmorzar.addEventListener("input", calcularTotalProteina);
+    dinarSelect.addEventListener("change", calcularTotalProteina);
+    quantitatDinar.addEventListener("input", calcularTotalProteina);
+    soparSelect.addEventListener("change", calcularTotalProteina);
+    quantitatSopar.addEventListener("input", calcularTotalProteina);
+    berenarSelect.addEventListener("change", calcularTotalProteina);
+    quantitatBerenar.addEventListener("input", calcularTotalProteina);
+  </script>
+</body>
+</html>
