@@ -5,55 +5,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Calculadora de proteïna</title>
   <style>
+    :root {
+      --primary: #6e57ff;
+      --background: #f6f6f6;
+      --white: #ffffff;
+      --text: #2b2b2b;
+      --highlight: #ffeecd;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: sans-serif;
-      background-color: #fdfcf9;
       margin: 0;
-      padding: 1rem;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      padding: 2rem 1rem;
     }
 
     .container {
       max-width: 500px;
       margin: auto;
-      background: white;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.07);
     }
 
     h2 {
       text-align: center;
-      color: #3b3b3b;
-      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      color: var(--primary);
     }
 
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     label {
+      font-size: 0.95rem;
       font-weight: 600;
       display: block;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.5rem;
     }
 
     select, input[type="number"] {
       width: 100%;
-      padding: 0.6rem;
+      padding: 0.8rem;
       font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      background: #fff;
+      transition: border 0.3s;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--primary);
+      outline: none;
     }
 
     .result {
       margin-top: 1.5rem;
-      background: #fff3db;
-      padding: 1rem;
-      border-radius: 8px;
+      background: var(--highlight);
+      padding: 1.2rem;
+      border-radius: 14px;
       text-align: center;
-      font-weight: bold;
-      color: #3b3b3b;
+      font-weight: 600;
+      font-size: 1rem;
     }
 
     .diff-positive {
@@ -62,6 +84,12 @@
 
     .diff-negative {
       color: red;
+    }
+
+    @media (max-width: 500px) {
+      h2 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
