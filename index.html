@@ -278,11 +278,11 @@
         outputDiv.textContent = `Objectiu de proteïna diària: ${quotaTarget} g | Total consumit: ${total} g`;
         const diff = (total - quotaTarget).toFixed(1);
         diferenciaDiv.innerHTML = diff >= 0
-          ? `Diferència respecte la quota: <span class="diff-positive">+${diff} g</span>`
-          : `Diferència respecte la quota: <span class="diff-negative">${diff} g</span>`;
+          ? `Diferència respecte la quota: <span class=\"diff-positive\">+${diff} g</span>`
+          : `Diferència respecte la quota: <span class=\"diff-negative\">${diff} g</span>`;
       } else {
-        outputDiv.textContent = "Insereix el teu pes i activitat per calcular";
-        diferenciaDiv.textContent = "";
+        outputDiv.textContent = \"Insereix el teu pes i activitat per calcular\";
+        diferenciaDiv.textContent = \"\";
       }
     }
   </script>
