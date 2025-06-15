@@ -21,101 +21,93 @@
     body, html {
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      background: var(--light);
+      background: linear-gradient(to bottom right, #b4aba2, #c4bcb5);
       color: var(--dark);
     }
 
     .hero {
-      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1606761568499-6d2346f2b26c?auto=format&fit=crop&w=1950&q=80') no-repeat center center;
-      background-size: cover;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
+      justify-content: center;
+      align-items: start;
       text-align: center;
-      color: white;
       padding: 2rem 1rem;
     }
 
-    .hero-text h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
+    .container {
+      max-width: 400px;
+      width: 100%;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     }
 
-    .hero-text p {
-      font-size: 1.2rem;
-      color: #fff9f4;
+    h1 {
+      color: white;
+      font-size: 2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .subtitle {
+      color: #ffe4b5;
+      font-size: 1rem;
       margin-bottom: 2rem;
     }
 
-    .hero-form {
-      width: 100%;
-      max-width: 400px;
-      background: #fff;
-      padding: 2rem 1.5rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      color: var(--dark);
-    }
-
-    .hero-form h3 {
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
+    .form-title {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
       color: var(--primary);
+      font-weight: bold;
     }
 
     .form-row {
       display: flex;
-      gap: 1rem;
+      gap: 0.5rem;
       margin-bottom: 1rem;
+    }
+
+    .form-row input,
+    .form-row select {
+      flex: 1;
     }
 
     input, select {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.7rem;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 10px;
+      background-color: var(--accent);
       font-size: 1rem;
-      background: var(--accent);
-    }
-
-    select {
-      appearance: none;
-    }
-
-    select + select,
-    select + input {
-      margin-top: 0.5rem;
-    }
-
-    .meal-select {
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
 
     button {
-      background: var(--primary);
+      background-color: var(--primary);
       color: white;
       width: 100%;
-      padding: 0.8rem;
+      padding: 0.9rem;
       border: none;
-      border-radius: 30px;
+      border-radius: 20px;
       font-size: 1rem;
+      font-weight: bold;
+      margin-top: 0.5rem;
       cursor: pointer;
     }
 
     button:hover {
-      background: #8a6248;
+      background-color: #8a6248;
     }
 
     .result {
       background: var(--accent);
-      padding: 1rem;
-      border-radius: 8px;
       margin-top: 1rem;
-      font-weight: bold;
+      padding: 1rem;
+      border-radius: 12px;
       text-align: center;
+      font-weight: bold;
     }
 
     .diff-positive {
@@ -137,133 +129,55 @@
       100% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0); }
     }
 
-    @media screen and (max-width: 600px) {
-      .hero-text h1 {
-        font-size: 2rem;
+    @media screen and (max-width: 500px) {
+      h1 {
+        font-size: 1.7rem;
       }
-
-      .hero-form {
-        padding: 1.5rem 1rem;
-      }
-
-      .form-row {
-        flex-direction: column;
+      .container {
+        margin-top: 1rem;
       }
     }
   </style>
 </head>
 <body>
   <section class="hero">
-    <div class="hero-text">
+    <div>
       <h1>Menges prou proteïna?</h1>
-    </div>
-    <form class="hero-form" onsubmit="event.preventDefault(); calculateProtein();">
-      <h3>Comprova-ho 👇</h3>
-      <div class="form-row">
-        <input type="number" id="weight" min="30" max="200" placeholder="Pes (kg)" />
-        <select id="activity">
-          <option value="">Nivell d'activitat</option>
-          <option value="1.0">Baix (1.0 g/kg)</option>
-          <option value="1.3">Moderat (1.3 g/kg)</option>
-          <option value="1.6">Actiu (1.6 g/kg)</option>
-          <option value="2.0">Atlètic (2.0 g/kg)</option>
+      <p class="subtitle">Comprova-ho 👇</p>
+
+      <form class="container" onsubmit="event.preventDefault(); calculateProtein();">
+        <div class="form-title">Comprova-ho 👇</div>
+        <div class="form-row">
+          <input type="number" id="weight" min="30" max="200" placeholder="Pes (kg)">
+          <select id="activity">
+            <option value="">Nivell d'activitat</option>
+            <option value="1.0">Baix (1.0 g/kg)</option>
+            <option value="1.3">Moderat (1.3 g/kg)</option>
+            <option value="1.6">Actiu (1.6 g/kg)</option>
+            <option value="2.0">Atlètic (2.0 g/kg)</option>
+          </select>
+        </div>
+
+        <select id="esmorzar">
+          <option value="0">Esmorzar</option>
+          <option value="5">Cafè amb llet (200g)</option>
+          <option value="4">Fruita amb llavors (150g)</option>
+          <option value="5">Iogurt natural (125g)</option>
+          <option value="3">Llet vegetal (200g)</option>
+          <option value="8">Mató (100g)</option>
+          <option value="7">Porridge (150g)</option>
+          <option value="4">Pa integral amb oli (50g)</option>
+          <option value="5">Smoothie (250g)</option>
+          <option value="6">Torrades amb alvocat (120g)</option>
         </select>
-      </div>
-      <select class="meal-select" id="esmorzar">
-        <option value="0">Esmorzar</option>
-        <option value="5.0">Cafè amb llet (200g)</option>
-        <option value="4.5">Fruita amb llavors (150g)</option>
-        <option value="4.75">Iogurt natural (125g)</option>
-        <option value="2.6">Llet vegetal (200g)</option>
-        <option value="7.5">Mató (100g)</option>
-        <option value="6.8">Porridge (150g)</option>
-        <option value="3.5">Pa integral amb oli (50g)</option>
-        <option value="5.0">Smoothie (250g)</option>
-        <option value="5.4">Torrades amb alvocat (120g)</option>
-      </select>
-      <select class="meal-select" id="dinar">
-        <option value="0">Dinar</option>
-        <option value="20.0">Amanida de llenties (250g)</option>
-        <option value="14.0">Amanida de cigrons (200g)</option>
-        <option value="6.0">Crema de verdures (300g)</option>
-        <option value="21.0">Escudella (300g)</option>
-        <option value="40.0">Pollastre al forn amb verdures (200g)</option>
-        <option value="45.0">Peix al forn + puré (250g)</option>
-        <option value="7.5">Arròs amb verdures (250g)</option>
-        <option value="12.5">Pasta amb tomàquet (250g)</option>
-        <option value="16.0">Quinoa amb hortalisses (200g)</option>
-        <option value="15.0">Truita de patates (150g)</option>
-      </select>
-      <select class="meal-select" id="berenar">
-        <option value="0">Berenar</option>
-        <option value="7.2">Galetes + llet (120g)</option>
-        <option value="5.5">Iogurt amb fruita (150g)</option>
-        <option value="2.0">Infusió amb llet (200g)</option>
-        <option value="7.5">Mató amb mel (100g)</option>
-        <option value="8.0">Batut de fruita i llavors (250g)</option>
-        <option value="7.5">Smoothie vegetal (250g)</option>
-      </select>
-      <select class="meal-select" id="sopar">
-        <option value="0">Sopar</option>
-        <option value="24.0">Amanida amb ou dur (200g)</option>
-        <option value="7.5">Crema de carbassó (300g)</option>
-        <option value="9.0">Puré de pastanaga (300g)</option>
-        <option value="36.0">Pollastre + verdura (200g)</option>
-        <option value="12.0">Pasta integral amb oli (200g)</option>
-        <option value="36.0">Sardines + verdura (180g)</option>
-        <option value="7.5">Sopa de verdures (300g)</option>
-        <option value="22.5">Ou remenat amb bolets (150g)</option>
-        <option value="15.0">Truita d’espinacs (150g)</option>
-      </select>
-      <button type="submit">Calcula ara</button>
-      <div class="result" id="output"></div>
-    </form>
-  </section>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const fields = ["weight", "activity", "esmorzar", "dinar", "berenar", "sopar"].map(id => document.getElementById(id));
-      function animateNext(currentIndex) {
-        const current = fields[currentIndex];
-        const next = fields[currentIndex + 1];
-        if (current && next && current.value) {
-          current.classList.remove("animated");
-          next.classList.add("animated");
-        }
-      }
-      fields[0].classList.add("animated");
-      fields.forEach((field, index) => {
-        field.addEventListener("input", () => animateNext(index));
-        field.addEventListener("change", () => animateNext(index));
-      });
-    });
-
-    function calculateProtein() {
-      const weight = parseFloat(document.getElementById("weight").value);
-      const activity = parseFloat(document.getElementById("activity").value);
-      const pe = parseFloat(document.getElementById("esmorzar").value) || 0;
-      const pd = parseFloat(document.getElementById("dinar").value) || 0;
-      const pb = parseFloat(document.getElementById("berenar").value) || 0;
-      const ps = parseFloat(document.getElementById("sopar").value) || 0;
-      const total = Math.round(pe + pd + pb + ps);
-
-      const output = document.getElementById("output");
-
-      if (!isNaN(weight) && !isNaN(activity)) {
-        const target = Math.round(weight * activity);
-        const diff = total - target;
-        const sign = diff >= 0 ? 'Excés' : 'Dèficit';
-        const diffVal = Math.abs(diff);
-
-        output.innerHTML = `
-          Necessitat de proteïna: ${target} g<br>
-          Consum diari: ${total} g<br>
-          ${sign}: <span class="${diff >= 0 ? 'diff-positive' : 'diff-negative'}">${diffVal} g</span>
-        `;
-      } else {
-        output.textContent = "";
-      }
-    }
-  </script>
-</body>
-</html>
+        <select id="dinar">
+          <option value="0">Dinar</option>
+          <option value="20">Amanida de llenties (250g)</option>
+          <option value="14">Amanida de cigrons (200g)</option>
+          <option value="6">Crema de verdures (300g)</option>
+          <option value="21">Escudella (300g)</option>
+          <option value="40">Pollastre al forn amb verdures (200g)</option>
+          <option value="45">Peix al forn + puré (250g)</option>
+          <option value="8">Arròs amb verdures (250g)</option>
+          <option value="13">Pasta amb
