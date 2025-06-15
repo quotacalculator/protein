@@ -76,13 +76,6 @@
       color: var(--dark);
     }
 
-    .hero-form h3 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      color: var(--primary);
-      text-align: center;
-    }
-
     .hero-form input, .hero-form select {
       width: 100%;
       padding: 0.75rem;
@@ -166,11 +159,10 @@
     <div class="hero-content">
       <div class="hero-text">
         <h1>Calcula la teva proteïna diària</h1>
-        <p>Una eina moderna i senzilla per adaptar la teva alimentació a les teves necessitats.</p>
+        <p>🥄 Introdueix les dades per veure la proteïna total estimada.</p>
       </div>
       <form class="hero-form" onsubmit="event.preventDefault()">
-        <h3>Posa’t a prova</h3>
-        <input type="number" id="weight" min="30" max="200" placeholder="El teu pes (kg)" />
+        <input type="number" id="weight" min="30" max="200" placeholder="El teu pes (kg)" class="animated" />
         <select id="activity">
           <option value="">Nivell d'activitat</option>
           <option value="1.0">Baix (1.0 g/kg)</option>
@@ -224,7 +216,7 @@
           <option value="22.5">Ou remenat amb bolets (~150g)</option>
           <option value="15.0">Truita d’espinacs (~150g)</option>
         </select>
-        <button type="submit" class="button-pulse" onclick="calculateProtein()">Calcula ara</button>
+        <button type="submit" onclick="calculateProtein()">Calcula ara</button>
         <div class="result" id="output">Introdueix les dades per veure la proteïna total estimada.</div>
         <div class="result" id="diferencia"></div>
       </form>
