@@ -55,14 +55,25 @@
     }
 
     .hero-form h3 {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       margin-bottom: 1rem;
       color: var(--primary);
     }
 
-    .hero-form input, .hero-form select {
+    .hero-form input {
       width: 100%;
-      padding: 1.1rem;
+      padding: 1rem;
+      margin-bottom: 1.1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: var(--accent);
+      color: var(--dark);
+    }
+
+    .hero-form select {
+      width: 100%;
+      padding: 1.2rem;
       margin-bottom: 1.1rem;
       border: 1px solid #ddd;
       border-radius: 8px;
@@ -120,11 +131,21 @@
 
       .hero-form {
         padding: 1.5rem;
-        margin-top: 0.5rem;
+        margin-top: 1rem;
       }
 
-      .hero-form input, .hero-form select, .hero-form button {
+      .hero-form input {
+        padding: 0.9rem;
+        font-size: 1rem;
+      }
+
+      .hero-form select {
         padding: 1.3rem;
+        font-size: 1.2rem;
+      }
+
+      .hero-form button {
+        padding: 1.2rem;
         font-size: 1.2rem;
       }
     }
@@ -205,20 +226,16 @@
         "sopar"
       ];
 
-      steps.forEach((id, index) => {
-        const current = document.getElementById(id);
-        const next = document.getElementById(steps[index + 1]);
-        if (!current || !next) return;
-
-        const eventType = current.tagName === "SELECT" ? "change" : "input";
-
-        current.addEventListener(eventType, () => {
+      for (let i = 0; i < steps.length - 1; i++) {
+        const current = document.getElementById(steps[i]);
+        const next = document.getElementById(steps[i + 1]);
+        current.addEventListener("change", () => {
           if (current.value && current.classList.contains("animated")) {
             current.classList.remove("animated");
             next.classList.add("animated");
           }
         });
-      });
+      }
     });
 
     function calculateProtein() {
