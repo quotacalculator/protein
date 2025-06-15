@@ -56,11 +56,6 @@
       margin-bottom: 0.5rem;
     }
 
-    .hero-text p {
-      font-size: 1.1rem;
-      color: var(--accent);
-    }
-
     .hero-form {
       flex: 1 1 300px;
       max-width: 400px;
@@ -70,7 +65,7 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
 
-    .hero-form .form-top {
+    .form-top {
       font-size: 1.1rem;
       text-align: center;
       margin-bottom: 1rem;
@@ -145,10 +140,10 @@
     <div class="hero-content">
       <div class="hero-text">
         <h1>Menges prou proteïna?</h1>
-        <p>Comprova-ho 👇</p>
       </div>
 
       <form class="hero-form" onsubmit="event.preventDefault(); calculateProtein();">
+        <div class="form-top">Comprova-ho 👇</div>
         <div class="row">
           <input type="number" id="weight" placeholder="Pes (kg)" min="30" max="200" />
           <select id="activity">
@@ -216,51 +211,45 @@
     </div>
   </section>
 
-  <footer style="text-align:center; padding:1rem; font-size:0.85rem; color:#999;">
-    © 2025 Quota Diēs. Creat amb ❤️ a Barcelona.
-  </footer>
-
   <script>
-    // Animate step-by-step
     document.addEventListener("DOMContentLoaded", () => {
-      const fields = ["weight", "activity", "esmorzar", "dinar", "berenar", "sopar"];
-      const highlight = (id) => {
-        fields.forEach(f => document.getElementById(f).classList.remove("animated"));
-        document.getElementById(id).classList.add("animated");
-      };
-      highlight(fields[0]);
+      const weight = document.getElementById("weight");
+      const activity = document.getElementById("activity");
 
-      fields.forEach((id, i) => {
-        const el = document.getElementById(id);
-        el.addEventListener("input", () => {
-          if (i + 1 < fields.length) highlight(fields[i + 1]);
-        });
-        el.addEventListener("change", () => {
-          if (i + 1 < fields.length) highlight(fields[i + 1]);
-        });
-      });
+      function animateNext(current, next) {
+        if (current.value && current.classList.contains("animated")) {
+          current.classList.remove("animated");
+          next.classList.add("animated");
+        }
+      }
+
+      weight.classList.add("animated");
+
+      weight.addEventListener("input", () => animateNext(weight, activity));
+      activity.addEventListener("change", () => animateNext(activity, document.getElementById("esmorzar")));
     });
 
     function calculateProtein() {
       const weight = parseFloat(document.getElementById("weight").value);
-      const factor = parseFloat(document.getElementById("activity").value);
-      const pe = parseFloat(document.getElementById("esmorzar").value) || 0;
-      const pd = parseFloat(document.getElementById("dinar").value) || 0;
-      const pb = parseFloat(document.getElementById("berenar").value) || 0;
-      const ps = parseFloat(document.getElementById("sopar").value) || 0;
-      const total = Math.round(pe + pd + pb + ps);
+      const activity = parseFloat(document.getElementById("activity").value);
+      const esmorzar = parseFloat(document.getElementById("esmorzar").value) || 0;
+      const dinar = parseFloat(document.getElementById("dinar").value) || 0;
+      const berenar = parseFloat(document.getElementById("berenar").value) || 0;
+      const sopar = parseFloat(document.getElementById("sopar").value) || 0;
+
+      const total = esmorzar + dinar + berenar + sopar;
+      const quota = Math.ceil(weight * activity);
+      const diff = total - quota;
+
       const output = document.getElementById("output");
 
-      if (!isNaN(weight) && !isNaN(factor)) {
-        const target = Math.ceil(weight * factor);
-        const diff = total - target;
-        const label = diff >= 0
-          ? `<span class="diff-positive">Excés: +${diff} g</span>`
-          : `<span class="diff-negative">Dèficit: ${diff} g</span>`;
-        output.innerHTML = `Necessitat de proteïna: ${target} g<br>Consum diari: ${total} g<br>${label}`;
-      } else {
-        output.textContent = "Insereix el teu pes i nivell d'activitat.";
-      }
+      output.innerHTML = `
+        Necessitat de proteïna: <strong>${quota} g</strong><br/>
+        Consum diari: <strong>${total} g</strong><br/>
+        Diferència: <strong class="${diff >= 0 ? 'diff-positive' : 'diff-negative'}">
+          ${diff >= 0 ? 'Excés' : 'Dèficit'} ${Math.abs(diff)} g
+        </strong>
+      `;
     }
   </script>
 </body>
