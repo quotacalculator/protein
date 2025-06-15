@@ -34,7 +34,7 @@
       align-items: flex-start;
       text-align: left;
       color: white;
-      padding: 2rem 1rem;
+      padding: 2rem 2rem 4rem;
     }
 
     .hero-content {
@@ -45,7 +45,6 @@
       justify-content: center;
       align-items: flex-start;
       gap: 2rem;
-      margin-top: 1rem;
     }
 
     .hero-text {
@@ -63,7 +62,7 @@
     .hero-text p {
       font-size: 1.1rem;
       color: #eee;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
     }
 
     .hero-form {
@@ -93,10 +92,11 @@
       font-size: 1rem;
     }
 
-    .hero-form input#weight {
-      padding: 0.5rem;
-      font-size: 0.95rem;
-      height: 40px;
+    .hero-form input[type="number"]#weight {
+      padding: 0.4rem;
+      font-size: 0.9rem;
+      height: 36px;
+      line-height: 1;
     }
 
     .hero-form button {
@@ -147,9 +147,8 @@
 
     @media screen and (max-width: 600px) {
       .hero {
-        padding-top: 1rem;
+        padding: 1rem;
         text-align: center;
-        align-items: flex-start;
       }
 
       .hero-text h1 {
@@ -171,7 +170,7 @@
     <div class="hero-content">
       <div class="hero-text">
         <h1>Calcula la teva proteïna diària</h1>
-        <p>🍽️ Introdueix les dades per veure la proteïna total estimada.</p>
+        <p>📊 Introdueix les dades per veure la proteïna total estimada.</p>
       </div>
       <form class="hero-form" onsubmit="event.preventDefault()">
         <input type="number" id="weight" min="30" max="200" placeholder="El teu pes (kg)" />
@@ -229,7 +228,7 @@
           <option value="15.0">Truita d’espinacs (~150g)</option>
         </select>
         <button type="submit" onclick="calculateProtein()">Calcula ara</button>
-        <div class="result" id="output">—</div>
+        <div class="result" id="output"></div>
         <div class="result" id="diferencia"></div>
       </form>
     </div>
@@ -240,6 +239,31 @@
   </footer>
 
   <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const weight = document.getElementById("weight");
+      const activity = document.getElementById("activity");
+      const esmorzar = document.getElementById("esmorzar");
+      const dinar = document.getElementById("dinar");
+      const berenar = document.getElementById("berenar");
+      const sopar = document.getElementById("sopar");
+
+      function animateNext(current, next) {
+        if (current.value && current.classList.contains("animated")) {
+          current.classList.remove("animated");
+          next.classList.add("animated");
+        }
+      }
+
+      weight.classList.add("animated");
+
+      weight.addEventListener("input", () => animateNext(weight, activity));
+      activity.addEventListener("change", () => animateNext(activity, esmorzar));
+      esmorzar.addEventListener("change", () => animateNext(esmorzar, dinar));
+      dinar.addEventListener("change", () => animateNext(dinar, berenar));
+      berenar.addEventListener("change", () => animateNext(berenar, sopar));
+      sopar.addEventListener("change", () => sopar.classList.remove("animated"));
+    });
+
     function calculateProtein() {
       const weightInput = document.getElementById("weight");
       const activityInput = document.getElementById("activity");
