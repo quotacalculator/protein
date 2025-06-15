@@ -265,18 +265,16 @@
       const berenar = parseFloat(document.getElementById("berenar").value) || 0;
       const sopar = parseFloat(document.getElementById("sopar").value) || 0;
 
-      const total = (esmorzar + dinar + berenar + sopar).toFixed(1);
+      const total = Math.round(esmorzar + dinar + berenar + sopar);
       const output = document.getElementById("output");
       const diff = document.getElementById("diferencia");
 
       if (!isNaN(weight) && !isNaN(factor)) {
-        const target = (weight * factor).toFixed(1);
-        output.textContent = `Objectiu de proteïna diària: ${target} g | Total consumit: ${total} g`;
+        const target = Math.ceil(weight * factor);
+        output.textContent = `Necessitat de proteïna: ${target} g | Consum diari: ${total} g`;
 
-        const diferencia = (total - target).toFixed(1);
-        diff.innerHTML = diferencia >= 0
-          ? `Diferència respecte la quota: <span class="diff-positive">+${diferencia} g</span>`
-          : `Diferència respecte la quota: <span class="diff-negative">${diferencia} g</span>`;
+        const diferencia = total - target;
+        diff.innerHTML = `Diferència: <span class="${diferencia >= 0 ? 'diff-positive' : 'diff-negative'}">${diferencia >= 0 ? '+' : ''}${diferencia} g</span>`;
       } else {
         output.textContent = "Insereix el teu pes i activitat per calcular";
         diff.textContent = "";
