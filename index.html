@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quota Diēs Calculadora de proteïna</title>
+  <title>Calculadora de proteïna</title>
   <style>
     body {
       font-family: sans-serif;
@@ -37,7 +37,7 @@
       margin-bottom: 0.3rem;
     }
 
-    select {
+    select, input[type="number"] {
       width: 100%;
       padding: 0.6rem;
       font-size: 1rem;
@@ -67,7 +67,7 @@
 </head>
 <body>
   <div class="container">
-    <h2>Quota Diēs — Calculadora de proteïna</h2>
+    <h2>Calculadora de proteïna</h2>
 
     <div class="form-group">
       <label for="weight">Pes (kg):</label>
@@ -123,12 +123,12 @@
       <label for="berenar">Berenar</label>
       <select id="berenar">
         <option value="0">-- Selecciona plat --</option>
-        <option value="10.5">Iogurt + Quota + fruita (~150g)</option>
+        <option value="5.5">Iogurt amb fruita (~150g)</option>
         <option value="7.5">Smoothie vegetal (~250g)</option>
         <option value="7.2">Galetes + llet (~120g)</option>
-        <option value="4.0">Infusió amb Quota (~200g)</option>
-        <option value="10.0">Mató + mel + Quota (~100g)</option>
-        <option value="10.0">Batut de fruita i llavors (~250g)</option>
+        <option value="2.0">Infusió amb llet (~200g)</option>
+        <option value="7.5">Mató amb mel (~100g)</option>
+        <option value="8.0">Batut de fruita i llavors (~250g)</option>
       </select>
     </div>
 
@@ -136,7 +136,7 @@
       <label for="sopar">Sopar</label>
       <select id="sopar">
         <option value="0">-- Selecciona plat --</option>
-        <option value="15.0">Crema carbassó + Quota (~300g)</option>
+        <option value="7.5">Crema de carbassó (~300g)</option>
         <option value="9.0">Puré de pastanaga (~300g)</option>
         <option value="15.0">Truita d’espinacs (~150g)</option>
         <option value="7.5">Sopa de verdures (~300g)</option>
@@ -166,8 +166,7 @@
       const factor = parseFloat(activityInput.value);
       if (!isNaN(weight) && !isNaN(factor)) {
         quotaTarget = (weight * factor).toFixed(1);
-        const scoops = (quotaTarget / 15).toFixed(1);
-        outputDiv.textContent = `${quotaTarget} g de proteïna/dia ≈ ${scoops} scoops de Quota Diēs`;
+        outputDiv.textContent = `Objectiu de proteïna diària: ${quotaTarget} g`;
         calcularTotalProteina();
       } else {
         outputDiv.textContent = "Insereix el teu pes i activitat per calcular";
