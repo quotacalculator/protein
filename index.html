@@ -130,12 +130,18 @@
       font-weight: bold;
     }
 
-    .diff-positive {
-      color: green;
+    .diff-positive { color: green; }
+    .diff-negative { color: red; }
+
+    .animated {
+      animation: pulse 1.5s ease-in-out infinite;
+      border: 2px solid var(--primary);
     }
 
-    .diff-negative {
-      color: red;
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(169, 116, 79, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0); }
     }
 
     footer {
@@ -179,7 +185,7 @@
       </div>
       <form class="hero-form" onsubmit="event.preventDefault()">
         <div class="row">
-          <input type="number" id="weight" min="30" max="200" placeholder="Pes (kg)" />
+          <input type="number" id="weight" min="30" max="200" placeholder="Pes (kg)" class="animated" />
           <select id="activity">
             <option value="">Nivell d'activitat</option>
             <option value="1.0">Baix (1.0 g/kg)</option>
@@ -276,6 +282,31 @@
         diff.textContent = "";
       }
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const weight = document.getElementById("weight");
+      const activity = document.getElementById("activity");
+      const esmorzar = document.getElementById("esmorzar");
+      const dinar = document.getElementById("dinar");
+      const berenar = document.getElementById("berenar");
+      const sopar = document.getElementById("sopar");
+
+      function animateNext(current, next) {
+        if (current.value && current.classList.contains("animated")) {
+          current.classList.remove("animated");
+          next.classList.add("animated");
+        }
+      }
+
+      weight.classList.add("animated");
+
+      weight.addEventListener("input", () => animateNext(weight, activity));
+      activity.addEventListener("change", () => animateNext(activity, esmorzar));
+      esmorzar.addEventListener("change", () => animateNext(esmorzar, dinar));
+      dinar.addEventListener("change", () => animateNext(dinar, berenar));
+      berenar.addEventListener("change", () => animateNext(berenar, sopar));
+      sopar.addEventListener("change", () => sopar.classList.remove("animated"));
+    });
   </script>
 </body>
 </html>
