@@ -40,7 +40,7 @@
     .hero h1 {
       font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       color: #fff;
     }
 
@@ -247,7 +247,7 @@
         output.innerHTML = `
           <div>Necessitat de proteïna: <strong>${target} g</strong></div>
           <div>Consum diari: <strong>${Math.round(total)} g</strong></div>
-          <div>Diferència: <span class="${color}"><strong>${label} ${Math.abs(diff)} g</strong></span></div>
+          <div class="${color}"><strong>${label} ${Math.abs(diff)} g</strong></div>
         `;
       } else {
         output.textContent = "Si us plau, completa pes i activitat.";
