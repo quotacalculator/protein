@@ -18,7 +18,7 @@
       padding: 0;
     }
 
-    body, html {
+    html, body {
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
       background: var(--light);
@@ -34,7 +34,7 @@
       align-items: center;
       text-align: left;
       color: white;
-      padding: 2rem;
+      padding: 1rem;
     }
 
     .hero-content {
@@ -43,8 +43,9 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       gap: 2rem;
+      margin-top: 1rem;
     }
 
     .hero-text {
@@ -61,18 +62,8 @@
 
     .hero-text p {
       font-size: 1.1rem;
-      color: #eee;
-      margin-bottom: 2rem;
-    }
-
-    .hero-text .intro-msg {
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 0.75rem;
-      border-radius: 8px;
       color: #fff;
-      font-weight: 500;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
     }
 
     .hero-form {
@@ -93,15 +84,13 @@
       border: 1px solid #ddd;
       border-radius: 8px;
       font-size: 1rem;
+      appearance: none;
+      background-color: #fffaf2;
       color: var(--dark);
-      background-color: var(--light);
     }
 
-    .hero-form select:focus, 
-    .hero-form input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(169, 116, 79, 0.2);
+    .hero-form select option {
+      color: var(--dark);
     }
 
     .hero-form button {
@@ -117,12 +106,7 @@
     }
 
     .hero-form button:hover {
-      background: linear-gradient(to right, #a9744f, #604529);
-    }
-
-    .hero-form button:active {
-      transform: scale(0.98);
-      box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+      background: linear-gradient(to right, #8a6248, #5e3f2b);
     }
 
     .result {
@@ -158,8 +142,7 @@
 
     @media screen and (max-width: 600px) {
       .hero {
-        padding: 1rem;
-        text-align: center;
+        padding: 0.5rem;
       }
 
       .hero-text h1 {
@@ -168,10 +151,12 @@
 
       .hero-text p {
         font-size: 1rem;
+        margin-bottom: 1rem;
       }
 
       .hero-form {
         padding: 1rem;
+        margin-top: -1rem;
       }
     }
   </style>
@@ -181,8 +166,7 @@
     <div class="hero-content">
       <div class="hero-text">
         <h1>Calcula la teva proteïna diària</h1>
-        <div class="intro-msg">📊 Introdueix les dades per veure la proteïna total estimada.</div>
-        <p>Una eina moderna i senzilla per adaptar la teva alimentació a les teves necessitats.</p>
+        <p>🍳 Introdueix les dades per veure la proteïna total estimada.</p>
       </div>
       <form class="hero-form" onsubmit="event.preventDefault()">
         <input type="number" id="weight" min="30" max="200" placeholder="El teu pes (kg)" />
@@ -251,20 +235,41 @@
   </footer>
 
   <script>
-    function calculateProtein() {
-      const weightInput = document.getElementById("weight");
-      const activityInput = document.getElementById("activity");
-      const outputDiv = document.getElementById("output");
-      const diferenciaDiv = document.getElementById("diferencia");
+    document.addEventListener("DOMContentLoaded", () => {
+      const weight = document.getElementById("weight");
+      const activity = document.getElementById("activity");
+      const esmorzar = document.getElementById("esmorzar");
+      const dinar = document.getElementById("dinar");
+      const berenar = document.getElementById("berenar");
+      const sopar = document.getElementById("sopar");
 
+      function animateNext(current, next) {
+        if (current.value && current.classList.contains("animated")) {
+          current.classList.remove("animated");
+          next.classList.add("animated");
+        }
+      }
+
+      weight.classList.add("animated");
+
+      weight.addEventListener("input", () => animateNext(weight, activity));
+      activity.addEventListener("change", () => animateNext(activity, esmorzar));
+      esmorzar.addEventListener("change", () => animateNext(esmorzar, dinar));
+      dinar.addEventListener("change", () => animateNext(dinar, berenar));
+      berenar.addEventListener("change", () => animateNext(berenar, sopar));
+      sopar.addEventListener("change", () => sopar.classList.remove("animated"));
+    });
+
+    function calculateProtein() {
+      const weight = parseFloat(document.getElementById("weight").value);
+      const factor = parseFloat(document.getElementById("activity").value);
       const pe = parseFloat(document.getElementById("esmorzar").value) || 0;
       const pd = parseFloat(document.getElementById("dinar").value) || 0;
       const pb = parseFloat(document.getElementById("berenar").value) || 0;
       const ps = parseFloat(document.getElementById("sopar").value) || 0;
       const total = (pe + pd + pb + ps).toFixed(1);
-
-      const weight = parseFloat(weightInput.value);
-      const factor = parseFloat(activityInput.value);
+      const outputDiv = document.getElementById("output");
+      const diferenciaDiv = document.getElementById("diferencia");
 
       if (!isNaN(weight) && !isNaN(factor)) {
         const quotaTarget = (weight * factor).toFixed(1);
@@ -274,7 +279,7 @@
           ? `Diferència respecte la quota: <span class="diff-positive">+${diff} g</span>`
           : `Diferència respecte la quota: <span class="diff-negative">${diff} g</span>`;
       } else {
-        outputDiv.textContent = "";
+        outputDiv.textContent = "Insereix el teu pes i activitat per calcular";
         diferenciaDiv.textContent = "";
       }
     }
