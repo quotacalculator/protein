@@ -33,8 +33,7 @@
       justify-content: center;
       align-items: flex-start;
       text-align: left;
-      color: white;
-      padding: 2rem 2rem 4rem;
+      padding: 2rem 1rem;
     }
 
     .hero-content {
@@ -42,33 +41,33 @@
       max-width: 1200px;
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      align-items: flex-start;
+      justify-content: space-between;
       gap: 2rem;
-      margin-top: 1rem;
     }
 
     .hero-text {
       flex: 1 1 300px;
-      max-width: 500px;
+      max-width: 480px;
+      color: white;
     }
 
     .hero-text h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
+      font-size: 2.5rem;
       margin-bottom: 0.5rem;
-      color: #fff;
+    }
+
+    .hero-text p {
+      font-size: 1.1rem;
+      color: var(--accent);
     }
 
     .hero-form {
       flex: 1 1 300px;
-      width: 100%;
       max-width: 400px;
-      background: #fff;
+      background: white;
       padding: 1.5rem;
       border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-      color: var(--dark);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
 
     .hero-form .form-top {
@@ -78,47 +77,32 @@
       color: var(--primary);
     }
 
-    .hero-form .row {
+    .row {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
     }
 
-    .hero-form .row input,
-    .hero-form .row select {
-      flex: 1;
-    }
-
-    .hero-form select,
-    .hero-form input {
-      width: 100%;
+    input, select {
       padding: 0.75rem;
-      margin-bottom: 1.2rem;
-      border: 1px solid #ddd;
       border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
       font-size: 1rem;
-      background-color: var(--light);
+      background: var(--light);
       color: var(--dark);
     }
 
-    .hero-form select:focus,
-    .hero-form input:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    .hero-form button {
+    button {
       background-color: var(--primary);
       color: white;
-      width: 100%;
       padding: 0.75rem;
       border: none;
+      width: 100%;
       border-radius: 30px;
       font-size: 1rem;
       cursor: pointer;
-    }
-
-    .hero-form button:hover {
-      background-color: #8a6248;
+      margin-top: 1rem;
     }
 
     .result {
@@ -144,20 +128,14 @@
       100% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0); }
     }
 
-    @media screen and (max-width: 600px) {
-      .hero {
-        padding-top: 1rem;
-        padding-bottom: 3rem;
+    @media (max-width: 768px) {
+      .hero-content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-text {
         text-align: center;
-        align-items: flex-start;
-      }
-
-      .hero-text h1 {
-        font-size: 1.8rem;
-      }
-
-      .hero-form {
-        padding: 1rem;
       }
     }
   </style>
@@ -167,9 +145,10 @@
     <div class="hero-content">
       <div class="hero-text">
         <h1>Menges prou proteïna?</h1>
+        <p>Comprova-ho 👇</p>
       </div>
+
       <form class="hero-form" onsubmit="event.preventDefault(); calculateProtein();">
-        <div class="form-top">Comprova-ho 👇</div>
         <div class="row">
           <input type="number" id="weight" placeholder="Pes (kg)" min="30" max="200" />
           <select id="activity">
@@ -237,30 +216,27 @@
     </div>
   </section>
 
-  <footer>
+  <footer style="text-align:center; padding:1rem; font-size:0.85rem; color:#999;">
     © 2025 Quota Diēs. Creat amb ❤️ a Barcelona.
   </footer>
 
   <script>
-    // Animate step-by-step fields
+    // Animate step-by-step
     document.addEventListener("DOMContentLoaded", () => {
-      const steps = ["weight", "activity", "esmorzar", "dinar", "berenar", "sopar"];
-      let currentStep = 0;
-
+      const fields = ["weight", "activity", "esmorzar", "dinar", "berenar", "sopar"];
       const highlight = (id) => {
-        steps.forEach(step => document.getElementById(step).classList.remove("animated"));
+        fields.forEach(f => document.getElementById(f).classList.remove("animated"));
         document.getElementById(id).classList.add("animated");
       };
+      highlight(fields[0]);
 
-      highlight(steps[0]);
-
-      steps.forEach((id, i) => {
+      fields.forEach((id, i) => {
         const el = document.getElementById(id);
         el.addEventListener("input", () => {
-          if (i < steps.length - 1) highlight(steps[i + 1]);
+          if (i + 1 < fields.length) highlight(fields[i + 1]);
         });
         el.addEventListener("change", () => {
-          if (i < steps.length - 1) highlight(steps[i + 1]);
+          if (i + 1 < fields.length) highlight(fields[i + 1]);
         });
       });
     });
@@ -273,21 +249,15 @@
       const pb = parseFloat(document.getElementById("berenar").value) || 0;
       const ps = parseFloat(document.getElementById("sopar").value) || 0;
       const total = Math.round(pe + pd + pb + ps);
-
       const output = document.getElementById("output");
 
       if (!isNaN(weight) && !isNaN(factor)) {
         const target = Math.ceil(weight * factor);
-        const difference = total - target;
-        const status = difference >= 0
-          ? `<span class="diff-positive">Excés: +${difference} g</span>`
-          : `<span class="diff-negative">Dèficit: ${difference} g</span>`;
-
-        output.innerHTML = `
-          Necessitat de proteïna: ${target} g<br>
-          Consum diari: ${total} g<br>
-          ${status}
-        `;
+        const diff = total - target;
+        const label = diff >= 0
+          ? `<span class="diff-positive">Excés: +${diff} g</span>`
+          : `<span class="diff-negative">Dèficit: ${diff} g</span>`;
+        output.innerHTML = `Necessitat de proteïna: ${target} g<br>Consum diari: ${total} g<br>${label}`;
       } else {
         output.textContent = "Insereix el teu pes i nivell d'activitat.";
       }
