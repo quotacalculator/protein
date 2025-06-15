@@ -124,7 +124,7 @@
       }
 
       .hero-form input, .hero-form select, .hero-form button {
-        padding: 1.2rem;
+        padding: 1.3rem;
         font-size: 1.2rem;
       }
     }
@@ -205,16 +205,20 @@
         "sopar"
       ];
 
-      for (let i = 0; i < steps.length - 1; i++) {
-        const current = document.getElementById(steps[i]);
-        const next = document.getElementById(steps[i + 1]);
-        current.addEventListener("change", () => {
+      steps.forEach((id, index) => {
+        const current = document.getElementById(id);
+        const next = document.getElementById(steps[index + 1]);
+        if (!current || !next) return;
+
+        const eventType = current.tagName === "SELECT" ? "change" : "input";
+
+        current.addEventListener(eventType, () => {
           if (current.value && current.classList.contains("animated")) {
             current.classList.remove("animated");
             next.classList.add("animated");
           }
         });
-      }
+      });
     });
 
     function calculateProtein() {
