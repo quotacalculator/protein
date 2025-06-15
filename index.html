@@ -93,7 +93,7 @@
     }
 
     .hero-form button {
-      background-color: var(--primary);
+      background: linear-gradient(135deg, #a9744f, #c3926c);
       color: white;
       width: 100%;
       padding: 0.75rem;
@@ -101,10 +101,13 @@
       border-radius: 30px;
       font-size: 1rem;
       cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 
     .hero-form button:hover {
-      background-color: #8a6248;
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
     }
 
     .result {
@@ -221,7 +224,7 @@
           <option value="22.5">Ou remenat amb bolets (~150g)</option>
           <option value="15.0">Truita d’espinacs (~150g)</option>
         </select>
-        <button type="submit" onclick="calculateProtein()">Calcula</button>
+        <button type="submit" class="button-pulse" onclick="calculateProtein()">Calcula ara</button>
         <div class="result" id="output">Introdueix les dades per veure la proteïna total estimada.</div>
         <div class="result" id="diferencia"></div>
       </form>
@@ -278,11 +281,11 @@
         outputDiv.textContent = `Objectiu de proteïna diària: ${quotaTarget} g | Total consumit: ${total} g`;
         const diff = (total - quotaTarget).toFixed(1);
         diferenciaDiv.innerHTML = diff >= 0
-          ? `Diferència respecte la quota: <span class=\"diff-positive\">+${diff} g</span>`
-          : `Diferència respecte la quota: <span class=\"diff-negative\">${diff} g</span>`;
+          ? `Diferència respecte la quota: <span class="diff-positive">+${diff} g</span>`
+          : `Diferència respecte la quota: <span class="diff-negative">${diff} g</span>`;
       } else {
-        outputDiv.textContent = \"Insereix el teu pes i activitat per calcular\";
-        diferenciaDiv.textContent = \"\";
+        outputDiv.textContent = "Insereix el teu pes i activitat per calcular";
+        diferenciaDiv.textContent = "";
       }
     }
   </script>
