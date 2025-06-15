@@ -60,12 +60,6 @@
       color: #fff;
     }
 
-    .hero-text p {
-      font-size: 1.2rem;
-      color: #eee;
-      margin-bottom: 1rem;
-    }
-
     .hero-form {
       flex: 1 1 300px;
       width: 100%;
@@ -75,6 +69,13 @@
       border-radius: 12px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
       color: var(--dark);
+    }
+
+    .hero-form .form-top {
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--primary);
     }
 
     .hero-form .row {
@@ -97,6 +98,12 @@
       font-size: 1rem;
       background-color: var(--light);
       color: var(--dark);
+    }
+
+    .hero-form select:focus,
+    .hero-form input:focus {
+      outline: none;
+      border-color: var(--primary);
     }
 
     .hero-form button {
@@ -126,6 +133,17 @@
     .diff-positive { color: green; }
     .diff-negative { color: red; }
 
+    .animated {
+      animation: pulse 1.5s ease-in-out infinite;
+      border: 2px solid var(--primary);
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(169, 116, 79, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0); }
+    }
+
     @media screen and (max-width: 600px) {
       .hero {
         padding-top: 1rem;
@@ -136,10 +154,6 @@
 
       .hero-text h1 {
         font-size: 1.8rem;
-      }
-
-      .hero-text p {
-        font-size: 1rem;
       }
 
       .hero-form {
@@ -153,10 +167,9 @@
     <div class="hero-content">
       <div class="hero-text">
         <h1>Menges prou proteïna?</h1>
-        <p>Comprova-ho 👇</p>
-        <p id="resultat-inicial">Introdueix les dades per veure la proteïna total estimada.</p>
       </div>
       <form class="hero-form" onsubmit="event.preventDefault(); calculateProtein();">
+        <div class="form-top">Comprova-ho 👇</div>
         <div class="row">
           <input type="number" id="weight" placeholder="Pes (kg)" min="30" max="200" />
           <select id="activity">
@@ -229,6 +242,29 @@
   </footer>
 
   <script>
+    // Animate step-by-step fields
+    document.addEventListener("DOMContentLoaded", () => {
+      const steps = ["weight", "activity", "esmorzar", "dinar", "berenar", "sopar"];
+      let currentStep = 0;
+
+      const highlight = (id) => {
+        steps.forEach(step => document.getElementById(step).classList.remove("animated"));
+        document.getElementById(id).classList.add("animated");
+      };
+
+      highlight(steps[0]);
+
+      steps.forEach((id, i) => {
+        const el = document.getElementById(id);
+        el.addEventListener("input", () => {
+          if (i < steps.length - 1) highlight(steps[i + 1]);
+        });
+        el.addEventListener("change", () => {
+          if (i < steps.length - 1) highlight(steps[i + 1]);
+        });
+      });
+    });
+
     function calculateProtein() {
       const weight = parseFloat(document.getElementById("weight").value);
       const factor = parseFloat(document.getElementById("activity").value);
@@ -243,12 +279,14 @@
       if (!isNaN(weight) && !isNaN(factor)) {
         const target = Math.ceil(weight * factor);
         const difference = total - target;
-        const status = difference >= 0 ? `Excés: +${difference} g` : `Dèficit: ${difference} g`;
+        const status = difference >= 0
+          ? `<span class="diff-positive">Excés: +${difference} g</span>`
+          : `<span class="diff-negative">Dèficit: ${difference} g</span>`;
 
         output.innerHTML = `
           Necessitat de proteïna: ${target} g<br>
           Consum diari: ${total} g<br>
-          <strong>${status}</strong>
+          ${status}
         `;
       } else {
         output.textContent = "Insereix el teu pes i nivell d'activitat.";
