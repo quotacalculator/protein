@@ -83,7 +83,9 @@
       text-align: center;
     }
 
-    .hero-form input, .hero-form select {
+    .hero-form input,
+    .hero-form select,
+    .hero-form textarea {
       width: 100%;
       padding: 0.75rem;
       margin-bottom: 1rem;
@@ -116,8 +118,13 @@
       font-weight: bold;
     }
 
-    .diff-positive { color: green; }
-    .diff-negative { color: red; }
+    .diff-positive {
+      color: green;
+    }
+
+    .diff-negative {
+      color: red;
+    }
 
     footer {
       text-align: center;
@@ -125,17 +132,6 @@
       padding: 2rem 1rem;
       color: #999;
       background-color: var(--light);
-    }
-
-    .animated {
-      animation: pulse 1.5s ease-in-out infinite;
-      border: 2px solid var(--primary);
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0.4); }
-      70% { box-shadow: 0 0 0 10px rgba(169, 116, 79, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0); }
     }
 
     @media screen and (max-width: 600px) {
@@ -167,7 +163,7 @@
       </div>
       <form class="hero-form" onsubmit="event.preventDefault()">
         <h3>Posa’t a prova</h3>
-        <input type="number" id="weight" min="30" max="200" placeholder="El teu pes (kg)" class="animated" />
+        <input type="number" id="weight" min="30" max="200" placeholder="El teu pes (kg)" />
         <select id="activity">
           <option value="">Nivell d'activitat</option>
           <option value="1.0">Baix (1.0 g/kg)</option>
@@ -177,20 +173,51 @@
         </select>
         <select id="esmorzar">
           <option value="0">Esmorzar</option>
-          <!-- Options preserved -->
+          <option value="5.0">Cafè amb llet (~200g)</option>
+          <option value="4.5">Fruita amb llavors (~150g)</option>
+          <option value="4.75">Iogurt natural (~125g)</option>
+          <option value="2.6">Llet vegetal (~200g)</option>
+          <option value="7.5">Mató (~100g)</option>
+          <option value="6.8">Porridge (~150g)</option>
+          <option value="3.5">Pa integral amb oli (~50g)</option>
+          <option value="5.0">Smoothie (~250g)</option>
+          <option value="5.4">Torrades amb alvocat (~120g)</option>
         </select>
         <select id="dinar">
           <option value="0">Dinar</option>
-          <!-- Options preserved -->
+          <option value="20.0">Amanida de llenties (~250g)</option>
+          <option value="14.0">Amanida de cigrons (~200g)</option>
+          <option value="6.0">Crema de verdures (~300g)</option>
+          <option value="21.0">Escudella (~300g)</option>
+          <option value="40.0">Pollastre al forn amb verdures (~200g)</option>
+          <option value="45.0">Peix al forn + puré (~250g)</option>
+          <option value="7.5">Arròs amb verdures (~250g)</option>
+          <option value="12.5">Pasta amb tomàquet (~250g)</option>
+          <option value="16.0">Quinoa amb hortalisses (~200g)</option>
+          <option value="15.0">Truita de patates (~150g)</option>
         </select>
         <select id="berenar">
           <option value="0">Berenar</option>
-          <!-- Options preserved -->
+          <option value="7.2">Galetes + llet (~120g)</option>
+          <option value="5.5">Iogurt amb fruita (~150g)</option>
+          <option value="2.0">Infusió amb llet (~200g)</option>
+          <option value="7.5">Mató amb mel (~100g)</option>
+          <option value="8.0">Batut de fruita i llavors (~250g)</option>
+          <option value="7.5">Smoothie vegetal (~250g)</option>
         </select>
         <select id="sopar">
           <option value="0">Sopar</option>
-          <!-- Options preserved -->
+          <option value="24.0">Amanida amb ou dur (~200g)</option>
+          <option value="7.5">Crema de carbassó (~300g)</option>
+          <option value="9.0">Puré de pastanaga (~300g)</option>
+          <option value="36.0">Pollastre + verdura (~200g)</option>
+          <option value="12.0">Pasta integral amb oli (~200g)</option>
+          <option value="36.0">Sardines + verdura (~180g)</option>
+          <option value="7.5">Sopa de verdures (~300g)</option>
+          <option value="22.5">Ou remenat amb bolets (~150g)</option>
+          <option value="15.0">Truita d’espinacs (~150g)</option>
         </select>
+        <textarea id="notes" placeholder="Comentaris opcionals..."></textarea>
         <button type="submit" onclick="calculateProtein()">Calcula</button>
         <div class="result" id="output">Introdueix les dades per veure la proteïna total estimada.</div>
         <div class="result" id="diferencia"></div>
@@ -203,38 +230,19 @@
   </footer>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const weight = document.getElementById("weight");
-      const activity = document.getElementById("activity");
-
-      function stepTo(next) {
-        return () => {
-          if (weight.value && activity.classList.contains("animated")) {
-            activity.classList.remove("animated");
-          }
-          if (weight.value && !activity.classList.contains("animated")) {
-            activity.classList.add("animated");
-          }
-        };
-      }
-
-      weight.addEventListener("input", stepTo(activity));
-    });
+    const weightInput = document.getElementById("weight");
+    const activityInput = document.getElementById("activity");
+    const outputDiv = document.getElementById("output");
+    const diferenciaDiv = document.getElementById("diferencia");
 
     function calculateProtein() {
-      const weightInput = document.getElementById("weight");
-      const activityInput = document.getElementById("activity");
-      const outputDiv = document.getElementById("output");
-      const diferenciaDiv = document.getElementById("diferencia");
-
+      const weight = parseFloat(weightInput.value);
+      const factor = parseFloat(activityInput.value);
       const pe = parseFloat(document.getElementById("esmorzar").value) || 0;
       const pd = parseFloat(document.getElementById("dinar").value) || 0;
       const pb = parseFloat(document.getElementById("berenar").value) || 0;
       const ps = parseFloat(document.getElementById("sopar").value) || 0;
       const total = (pe + pd + pb + ps).toFixed(1);
-
-      const weight = parseFloat(weightInput.value);
-      const factor = parseFloat(activityInput.value);
 
       if (!isNaN(weight) && !isNaN(factor)) {
         const quotaTarget = (weight * factor).toFixed(1);
