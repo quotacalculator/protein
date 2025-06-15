@@ -31,10 +31,10 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       text-align: left;
       color: white;
-      padding: 2rem;
+      padding: 2rem 2rem 4rem;
     }
 
     .hero-content {
@@ -45,6 +45,7 @@
       justify-content: center;
       align-items: flex-start;
       gap: 2rem;
+      margin-top: 1rem;
     }
 
     .hero-text {
@@ -55,7 +56,7 @@
     .hero-text h1 {
       font-size: 2.2rem;
       font-weight: 700;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       color: #fff;
     }
 
@@ -147,12 +148,18 @@
 
     @media screen and (max-width: 600px) {
       .hero {
-        padding: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 3rem;
         text-align: center;
+        align-items: flex-start;
+      }
+
+      .hero-text {
+        margin-top: 0;
       }
 
       .hero-text h1 {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
       }
 
       .hero-text p {
@@ -170,72 +177,11 @@
     <div class="hero-content">
       <div class="hero-text">
         <h1>Menges prou proteïna?</h1>
-        <p>Comprova-ho 👇</p>        
+        <p>Comprova-ho 👇</p>
+        <p id="resultat-inicial">Introdueix les dades per veure la proteïna total estimada.</p>
       </div>
       <form class="hero-form" onsubmit="event.preventDefault()">
-        <div class="row">
-          <input type="number" id="weight" min="30" max="200" placeholder="Pes (kg)" class="animated" />
-          <select id="activity">
-            <option value="">Nivell d'activitat</option>
-            <option value="1.0">Baix (1.0 g/kg)</option>
-            <option value="1.3">Moderat (1.3 g/kg)</option>
-            <option value="1.6">Actiu (1.6 g/kg)</option>
-            <option value="2.0">Atlètic (2.0 g/kg)</option>
-          </select>
-        </div>
-
-        <select id="esmorzar">
-          <option value="0">Esmorzar</option>
-          <option value="5.0">Cafè amb llet (200g)</option>
-          <option value="4.5">Fruita amb llavors (150g)</option>
-          <option value="4.75">Iogurt natural (125g)</option>
-          <option value="2.6">Llet vegetal (200g)</option>
-          <option value="7.5">Mató (100g)</option>
-          <option value="6.8">Porridge (150g)</option>
-          <option value="3.5">Pa integral amb oli (50g)</option>
-          <option value="5.0">Smoothie (250g)</option>
-          <option value="5.4">Torrades amb alvocat (120g)</option>
-        </select>
-
-        <select id="dinar">
-          <option value="0">Dinar</option>
-          <option value="20.0">Amanida de llenties (250g)</option>
-          <option value="14.0">Amanida de cigrons (200g)</option>
-          <option value="6.0">Crema de verdures (300g)</option>
-          <option value="21.0">Escudella (300g)</option>
-          <option value="40.0">Pollastre al forn amb verdures (200g)</option>
-          <option value="45.0">Peix al forn + puré (250g)</option>
-          <option value="7.5">Arròs amb verdures (250g)</option>
-          <option value="12.5">Pasta amb tomàquet (250g)</option>
-          <option value="16.0">Quinoa amb hortalisses (200g)</option>
-          <option value="15.0">Truita de patates (150g)</option>
-        </select>
-
-        <select id="berenar">
-          <option value="0">Berenar</option>
-          <option value="7.2">Galetes + llet (120g)</option>
-          <option value="5.5">Iogurt amb fruita (150g)</option>
-          <option value="2.0">Infusió amb llet (200g)</option>
-          <option value="7.5">Mató amb mel (100g)</option>
-          <option value="8.0">Batut de fruita i llavors (250g)</option>
-          <option value="7.5">Smoothie vegetal (250g)</option>
-        </select>
-
-        <select id="sopar">
-          <option value="0">Sopar</option>
-          <option value="24.0">Amanida amb ou dur (200g)</option>
-          <option value="7.5">Crema de carbassó (300g)</option>
-          <option value="9.0">Puré de pastanaga (300g)</option>
-          <option value="36.0">Pollastre + verdura (200g)</option>
-          <option value="12.0">Pasta integral amb oli (200g)</option>
-          <option value="36.0">Sardines + verdura (180g)</option>
-          <option value="7.5">Sopa de verdures (300g)</option>
-          <option value="22.5">Ou remenat amb bolets (150g)</option>
-          <option value="15.0">Truita d’espinacs (150g)</option>
-        </select>
-
-        <button type="submit" onclick="calculateProtein()">Calcula ara</button>
-        <div class="result" id="output"></div>
+        <!-- Add your form fields here -->
       </form>
     </div>
   </section>
@@ -245,49 +191,7 @@
   </footer>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const fields = [
-        "weight", "activity", "esmorzar", "dinar", "berenar", "sopar"
-      ].map(id => document.getElementById(id));
-
-      fields[0].classList.add("animated");
-      fields.slice(0, -1).forEach((field, idx) => {
-        field.addEventListener("change", () => {
-          if (field.value) {
-            field.classList.remove("animated");
-            fields[idx + 1].classList.add("animated");
-          }
-        });
-      });
-    });
-
-    function calculateProtein() {
-      const weight = parseFloat(document.getElementById("weight").value);
-      const factor = parseFloat(document.getElementById("activity").value);
-      const pe = parseFloat(document.getElementById("esmorzar").value) || 0;
-      const pd = parseFloat(document.getElementById("dinar").value) || 0;
-      const pb = parseFloat(document.getElementById("berenar").value) || 0;
-      const ps = parseFloat(document.getElementById("sopar").value) || 0;
-      const total = Math.round(pe + pd + pb + ps);
-
-      const outputDiv = document.getElementById("output");
-
-      if (!isNaN(weight) && !isNaN(factor)) {
-        const quotaTarget = Math.round(weight * factor);
-        const diff = total - quotaTarget;
-        const differenceText = diff >= 0
-          ? `Excés: +${diff} g`
-          : `Dèficit: ${diff} g`;
-
-        outputDiv.innerHTML = `
-          Necessitat de proteïna: ${quotaTarget} g<br>
-          Consum diari: ${total} g<br>
-          ${differenceText}
-        `;
-      } else {
-        outputDiv.textContent = "Insereix el teu pes i nivell d'activitat per calcular";
-      }
-    }
+    // Your JS logic here
   </script>
 </body>
 </html>
