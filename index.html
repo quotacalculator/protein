@@ -33,7 +33,6 @@
       flex-direction: column;
       align-items: center;
       padding: 2rem 1rem;
-      text-align: center;
     }
 
     .hero h1 {
@@ -41,21 +40,23 @@
       font-weight: 700;
       color: #fff;
       margin-bottom: 0.5rem;
+      text-align: center;
     }
 
     .hero-form {
       background: #fff;
-      padding: 2rem 1.5rem;
+      padding: 1.5rem;
       border-radius: 16px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-      max-width: 420px;
+      max-width: 400px;
       width: 100%;
     }
 
     .hero-form h3 {
       font-size: 1.2rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       color: var(--primary);
+      text-align: center;
     }
 
     .row {
@@ -64,15 +65,20 @@
       margin-bottom: 1rem;
     }
 
+    .row input, .row select {
+      flex: 1;
+    }
+
     .hero-form input,
     .hero-form select {
       width: 100%;
       padding: 1rem;
       margin-bottom: 1rem;
-      font-size: 1.1rem;
-      border-radius: 8px;
       border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
       background-color: var(--accent);
+      color: var(--dark);
     }
 
     .hero-form button {
@@ -80,9 +86,9 @@
       color: white;
       width: 100%;
       padding: 1rem;
-      font-size: 1.1rem;
       border: none;
       border-radius: 30px;
+      font-size: 1rem;
       cursor: pointer;
       margin-top: 1rem;
     }
@@ -93,11 +99,10 @@
 
     .result {
       background: var(--accent);
-      padding: 1.5rem;
+      padding: 1rem;
       border-radius: 8px;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       text-align: center;
-      font-size: 1.1rem;
       font-weight: bold;
     }
 
@@ -123,9 +128,22 @@
     @media screen and (max-width: 600px) {
       .hero h1 {
         font-size: 1.7rem;
+        margin-top: 1rem;
+      }
+      .hero-form {
+        padding: 1rem;
+      }
+      .hero-form input,
+      .hero-form select {
+        font-size: 1.1rem;
+        padding: 1rem;
       }
       .row {
         flex-direction: column;
+        gap: 0;
+      }
+      .result {
+        margin-top: 0.75rem;
       }
     }
   </style>
@@ -136,7 +154,7 @@
     <form class="hero-form" onsubmit="event.preventDefault(); calculateProtein();">
       <h3>Comprova-ho 👇</h3>
       <div class="row">
-        <input type="number" id="weight" placeholder="Pes (kg)" class="animated" />
+        <input type="number" id="weight" min="30" max="200" placeholder="Pes (kg)" class="animated" />
         <select id="activity">
           <option value="">Nivell d'activitat</option>
           <option value="1.0">Baix (1.0 g/kg)</option>
@@ -145,29 +163,52 @@
           <option value="2.0">Atlètic (2.0 g/kg)</option>
         </select>
       </div>
-
       <select id="esmorzar">
         <option value="0">Esmorzar</option>
         <option value="5">Cafè amb llet (200g)</option>
         <option value="4">Fruita amb llavors (150g)</option>
         <option value="5">Iogurt natural (125g)</option>
+        <option value="3">Llet vegetal (200g)</option>
+        <option value="8">Mató (100g)</option>
+        <option value="6">Porridge (150g)</option>
+        <option value="4">Pa integral amb oli (50g)</option>
+        <option value="5">Smoothie (250g)</option>
+        <option value="5">Torrades amb alvocat (120g)</option>
       </select>
       <select id="dinar">
         <option value="0">Dinar</option>
+        <option value="20">Amanida de llenties (250g)</option>
+        <option value="14">Amanida de cigrons (200g)</option>
+        <option value="6">Crema de verdures (300g)</option>
         <option value="21">Escudella (300g)</option>
+        <option value="40">Pollastre al forn amb verdures (200g)</option>
         <option value="45">Peix al forn + puré (250g)</option>
+        <option value="7">Arròs amb verdures (250g)</option>
+        <option value="13">Pasta amb tomàquet (250g)</option>
+        <option value="16">Quinoa amb hortalisses (200g)</option>
+        <option value="15">Truita de patates (150g)</option>
       </select>
       <select id="berenar">
         <option value="0">Berenar</option>
+        <option value="7">Galetes + llet (120g)</option>
+        <option value="6">Iogurt amb fruita (150g)</option>
+        <option value="2">Infusió amb llet (200g)</option>
         <option value="7">Mató amb mel (100g)</option>
         <option value="8">Batut de fruita i llavors (250g)</option>
+        <option value="7">Smoothie vegetal (250g)</option>
       </select>
       <select id="sopar">
         <option value="0">Sopar</option>
+        <option value="24">Amanida amb ou dur (200g)</option>
+        <option value="8">Crema de carbassó (300g)</option>
+        <option value="9">Puré de pastanaga (300g)</option>
+        <option value="36">Pollastre + verdura (200g)</option>
+        <option value="12">Pasta integral amb oli (200g)</option>
+        <option value="36">Sardines + verdura (180g)</option>
+        <option value="8">Sopa de verdures (300g)</option>
         <option value="23">Ou remenat amb bolets (150g)</option>
         <option value="15">Truita d’espinacs (150g)</option>
       </select>
-
       <button type="submit">Calcula ara</button>
       <div class="result" id="output">—</div>
     </form>
@@ -175,27 +216,35 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const inputs = [
-        "weight", "activity", "esmorzar", "dinar", "berenar", "sopar"
-      ].map(id => document.getElementById(id));
+      const weight = document.getElementById("weight");
+      const activity = document.getElementById("activity");
+      const esmorzar = document.getElementById("esmorzar");
+      const dinar = document.getElementById("dinar");
+      const berenar = document.getElementById("berenar");
+      const sopar = document.getElementById("sopar");
 
-      inputs.reduce((prev, next) => {
-        prev.addEventListener("change", () => {
-          if (prev.value) {
-            prev.classList.remove("animated");
-            next.classList.add("animated");
-          }
-        });
-        return next;
-      });
+      function animateNext(current, next) {
+        if (current.value && current.classList.contains("animated")) {
+          current.classList.remove("animated");
+          next.classList.add("animated");
+        }
+      }
+
+      weight.addEventListener("input", () => animateNext(weight, activity));
+      activity.addEventListener("change", () => animateNext(activity, esmorzar));
+      esmorzar.addEventListener("change", () => animateNext(esmorzar, dinar));
+      dinar.addEventListener("change", () => animateNext(dinar, berenar));
+      berenar.addEventListener("change", () => animateNext(berenar, sopar));
     });
 
     function calculateProtein() {
       const weight = parseFloat(document.getElementById("weight").value);
       const factor = parseFloat(document.getElementById("activity").value);
-      const total = ["esmorzar", "dinar", "berenar", "sopar"]
-        .map(id => parseFloat(document.getElementById(id).value) || 0)
-        .reduce((a, b) => a + b, 0);
+      const pe = parseFloat(document.getElementById("esmorzar").value) || 0;
+      const pd = parseFloat(document.getElementById("dinar").value) || 0;
+      const pb = parseFloat(document.getElementById("berenar").value) || 0;
+      const ps = parseFloat(document.getElementById("sopar").value) || 0;
+      const total = pe + pd + pb + ps;
 
       const output = document.getElementById("output");
 
@@ -208,7 +257,7 @@
         output.innerHTML = `
           <div>Necessitat de proteïna: <strong>${target} g</strong></div>
           <div>Consum diari: <strong>${Math.round(total)} g</strong></div>
-          <div class="${color}"><strong>${label} ${Math.abs(diff)} g</strong></div>
+          <div><span class="${color}"><strong>${label} ${Math.abs(diff)} g</strong></span></div>
         `;
       } else {
         output.textContent = "Si us plau, completa pes i activitat.";
