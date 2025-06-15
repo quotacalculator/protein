@@ -25,11 +25,6 @@
       color: var(--dark);
     }
 
-    select, option {
-      color: var(--dark);
-      background-color: #fff;
-    }
-
     .hero {
       background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1606761568499-6d2346f2b26c?auto=format&fit=crop&w=1950&q=80') no-repeat center center;
       background-size: cover;
@@ -70,6 +65,16 @@
       margin-bottom: 2rem;
     }
 
+    .hero-text .intro-msg {
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.75rem;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
     .hero-form {
       flex: 1 1 300px;
       width: 100%;
@@ -88,11 +93,19 @@
       border: 1px solid #ddd;
       border-radius: 8px;
       font-size: 1rem;
-      background: #fff;
+      color: var(--dark);
+      background-color: var(--light);
+    }
+
+    .hero-form select:focus, 
+    .hero-form input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(169, 116, 79, 0.2);
     }
 
     .hero-form button {
-      background: linear-gradient(135deg, #a9744f, #c3926c);
+      background: linear-gradient(to right, #a9744f, #7c5e3c);
       color: white;
       width: 100%;
       padding: 0.75rem;
@@ -100,13 +113,16 @@
       border-radius: 30px;
       font-size: 1rem;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
     }
 
     .hero-form button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+      background: linear-gradient(to right, #a9744f, #604529);
+    }
+
+    .hero-form button:active {
+      transform: scale(0.98);
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
     }
 
     .result {
@@ -165,10 +181,11 @@
     <div class="hero-content">
       <div class="hero-text">
         <h1>Calcula la teva proteïna diària</h1>
-        <p>🥄 Introdueix les dades per veure la proteïna total estimada.</p>
+        <div class="intro-msg">📊 Introdueix les dades per veure la proteïna total estimada.</div>
+        <p>Una eina moderna i senzilla per adaptar la teva alimentació a les teves necessitats.</p>
       </div>
       <form class="hero-form" onsubmit="event.preventDefault()">
-        <input type="number" id="weight" min="30" max="200" placeholder="El teu pes (kg)" class="animated" />
+        <input type="number" id="weight" min="30" max="200" placeholder="El teu pes (kg)" />
         <select id="activity">
           <option value="">Nivell d'activitat</option>
           <option value="1.0">Baix (1.0 g/kg)</option>
@@ -223,7 +240,7 @@
           <option value="15.0">Truita d’espinacs (~150g)</option>
         </select>
         <button type="submit" onclick="calculateProtein()">Calcula ara</button>
-        <div class="result" id="output">🍽️ Introdueix les dades per veure la proteïna total estimada.</div>
+        <div class="result" id="output"></div>
         <div class="result" id="diferencia"></div>
       </form>
     </div>
@@ -234,31 +251,6 @@
   </footer>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const weight = document.getElementById("weight");
-      const activity = document.getElementById("activity");
-      const esmorzar = document.getElementById("esmorzar");
-      const dinar = document.getElementById("dinar");
-      const berenar = document.getElementById("berenar");
-      const sopar = document.getElementById("sopar");
-
-      function animateNext(current, next) {
-        if (current.value && current.classList.contains("animated")) {
-          current.classList.remove("animated");
-          next.classList.add("animated");
-        }
-      }
-
-      weight.classList.add("animated");
-
-      weight.addEventListener("input", () => animateNext(weight, activity));
-      activity.addEventListener("change", () => animateNext(activity, esmorzar));
-      esmorzar.addEventListener("change", () => animateNext(esmorzar, dinar));
-      dinar.addEventListener("change", () => animateNext(dinar, berenar));
-      berenar.addEventListener("change", () => animateNext(berenar, sopar));
-      sopar.addEventListener("change", () => sopar.classList.remove("animated"));
-    });
-
     function calculateProtein() {
       const weightInput = document.getElementById("weight");
       const activityInput = document.getElementById("activity");
@@ -282,7 +274,7 @@
           ? `Diferència respecte la quota: <span class="diff-positive">+${diff} g</span>`
           : `Diferència respecte la quota: <span class="diff-negative">${diff} g</span>`;
       } else {
-        outputDiv.textContent = "Insereix el teu pes i activitat per calcular";
+        outputDiv.textContent = "";
         diferenciaDiv.textContent = "";
       }
     }
