@@ -26,7 +26,7 @@
     }
 
     .hero {
-      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)),
+      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), 
         url('https://images.unsplash.com/photo-1606761568499-6d2346f2b26c?auto=format&fit=crop&w=1950&q=80') no-repeat center center;
       background-size: cover;
       min-height: 100vh;
@@ -101,10 +101,6 @@
       margin-bottom: 1rem;
     }
 
-    .hero-form select {
-      font-weight: 500;
-    }
-
     .hero-form button {
       width: 100%;
       padding: 0.75rem;
@@ -114,7 +110,6 @@
       color: white;
       background: linear-gradient(to right, #a9744f, #996037);
       cursor: pointer;
-      transition: background 0.3s ease-in-out;
     }
 
     .hero-form button:hover {
@@ -160,10 +155,6 @@
 
       .hero-text h1 {
         font-size: 2rem;
-      }
-
-      .hero-text p {
-        font-size: 1rem;
       }
 
       .hero-form {
@@ -247,7 +238,6 @@
 
         <button type="submit" onclick="calculateProtein()">Calcula ara</button>
         <div class="result" id="output"></div>
-        <div class="result" id="diferencia"></div>
       </form>
     </div>
   </section>
@@ -267,17 +257,18 @@
 
       const total = Math.round(esmorzar + dinar + berenar + sopar);
       const output = document.getElementById("output");
-      const diff = document.getElementById("diferencia");
 
       if (!isNaN(weight) && !isNaN(factor)) {
         const target = Math.ceil(weight * factor);
-        output.textContent = `Necessitat de proteïna: ${target} g | Consum diari: ${total} g`;
-
-        const diferencia = total - target;
-        diff.innerHTML = `Diferència: <span class="${diferencia >= 0 ? 'diff-positive' : 'diff-negative'}">${diferencia >= 0 ? '+' : ''}${diferencia} g</span>`;
+        const diff = total - target;
+        const label = diff >= 0 ? "Excés" : "Dèficit";
+        output.innerHTML = `
+          Necessitat de proteïna: ${target} g<br>
+          Consum diari: ${total} g<br>
+          ${label}: <span class="${diff >= 0 ? 'diff-positive' : 'diff-negative'}">${diff} g</span>
+        `;
       } else {
         output.textContent = "Insereix el teu pes i activitat per calcular";
-        diff.textContent = "";
       }
     }
 
