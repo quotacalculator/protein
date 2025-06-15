@@ -83,9 +83,7 @@
       text-align: center;
     }
 
-    .hero-form input,
-    .hero-form select,
-    .hero-form textarea {
+    .hero-form input, .hero-form select {
       width: 100%;
       padding: 0.75rem;
       margin-bottom: 1rem;
@@ -118,12 +116,18 @@
       font-weight: bold;
     }
 
-    .diff-positive {
-      color: green;
+    .diff-positive { color: green; }
+    .diff-negative { color: red; }
+
+    .animated {
+      animation: pulse 1.5s ease-in-out infinite;
+      border: 2px solid var(--primary);
     }
 
-    .diff-negative {
-      color: red;
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(169, 116, 79, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0); }
     }
 
     footer {
@@ -217,7 +221,6 @@
           <option value="22.5">Ou remenat amb bolets (~150g)</option>
           <option value="15.0">Truita d’espinacs (~150g)</option>
         </select>
-        <textarea id="notes" placeholder="Comentaris opcionals..."></textarea>
         <button type="submit" onclick="calculateProtein()">Calcula</button>
         <div class="result" id="output">Introdueix les dades per veure la proteïna total estimada.</div>
         <div class="result" id="diferencia"></div>
@@ -230,19 +233,45 @@
   </footer>
 
   <script>
-    const weightInput = document.getElementById("weight");
-    const activityInput = document.getElementById("activity");
-    const outputDiv = document.getElementById("output");
-    const diferenciaDiv = document.getElementById("diferencia");
+    document.addEventListener("DOMContentLoaded", () => {
+      const weight = document.getElementById("weight");
+      const activity = document.getElementById("activity");
+      const esmorzar = document.getElementById("esmorzar");
+      const dinar = document.getElementById("dinar");
+      const berenar = document.getElementById("berenar");
+      const sopar = document.getElementById("sopar");
+
+      function animateNext(current, next) {
+        if (current.value && current.classList.contains("animated")) {
+          current.classList.remove("animated");
+          next.classList.add("animated");
+        }
+      }
+
+      weight.classList.add("animated");
+
+      weight.addEventListener("input", () => animateNext(weight, activity));
+      activity.addEventListener("change", () => animateNext(activity, esmorzar));
+      esmorzar.addEventListener("change", () => animateNext(esmorzar, dinar));
+      dinar.addEventListener("change", () => animateNext(dinar, berenar));
+      berenar.addEventListener("change", () => animateNext(berenar, sopar));
+      sopar.addEventListener("change", () => sopar.classList.remove("animated"));
+    });
 
     function calculateProtein() {
-      const weight = parseFloat(weightInput.value);
-      const factor = parseFloat(activityInput.value);
+      const weightInput = document.getElementById("weight");
+      const activityInput = document.getElementById("activity");
+      const outputDiv = document.getElementById("output");
+      const diferenciaDiv = document.getElementById("diferencia");
+
       const pe = parseFloat(document.getElementById("esmorzar").value) || 0;
       const pd = parseFloat(document.getElementById("dinar").value) || 0;
       const pb = parseFloat(document.getElementById("berenar").value) || 0;
       const ps = parseFloat(document.getElementById("sopar").value) || 0;
       const total = (pe + pd + pb + ps).toFixed(1);
+
+      const weight = parseFloat(weightInput.value);
+      const factor = parseFloat(activityInput.value);
 
       if (!isNaN(weight) && !isNaN(factor)) {
         const quotaTarget = (weight * factor).toFixed(1);
