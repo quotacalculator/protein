@@ -203,15 +203,15 @@ body, html {
     margin-top: 0;    
   }
   .hero {
-    background: linear-gradient(
-        rgba(255, 255, 255, 0.92),
-        rgba(255, 255, 255, 0.92)
-      ),
-      url('your-image.jpg') no-repeat center center;
-    background-size: cover;
-    background-position: center;
-  }
-    
+  background: var(--light); /* soft background */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1rem;
+   
   }
 
   .hero-form {
