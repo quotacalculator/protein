@@ -222,12 +222,44 @@ body, html {
     font-size: 1.2rem;
   }
 }
+  .hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  align-items: center;
+}
+
+/* Desktop layout */
+@media screen and (min-width: 1024px) {
+  .hero-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1100px;
+    width: 100%;
+  }
+
+  .hero-text {
+    flex: 1;
+    text-align: left;
+  }
+
+  .hero-form {
+    flex: 1;
+    max-width: 400px;
+    padding: 2rem;
+  }
+}  
 </style>
 
 </head>
 <body>
   <section class="hero">
-    <h1>Menges prou proteïna?</h1>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Menges prou proteïna?</h1>
+      </div>
     <form class="hero-form" onsubmit="event.preventDefault(); calculateProtein();">
       <h3>Comprova-ho 👇</h3>
       <div class="input-group">
@@ -289,6 +321,7 @@ body, html {
       <button type="submit">Calcula ara</button>
       <div class="result" id="output">—</div>
     </form>
+    </div>
   </section>
 
   <script>
