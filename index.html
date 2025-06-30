@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quota Diēs | Calculadora de proteïna</title>
+<meta name="description" content="Descobreix si menges prou proteïna segons el teu pes i activitat. Utilitza la nostra calculadora i millora la teva alimentació avui mateix.">
+<link rel="icon" href="/cdn/shop/files/favicon.png?crop=center&height=32&v=1751129409&width=32" type="image/png" />
+  <title>Quota | Calculadora de proteïna</title>
   <style>
 :root {
-  --primary: #a9744f;
+  --primary: #ac5c41;
   --accent: #fff2df;
   --dark: #7c5e3c;
   --light: #fefaf6;
@@ -21,13 +23,13 @@
 body, html {
   height: 100%;
   font-family: 'Segoe UI', sans-serif;
-  background: var(--light);
-  color: var(--dark);
+  background: transparent;
+  color: transparent;
   font-size: 16px;
 }
 
 .hero {
-  background: var(--light);
+  background: transparent;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -95,12 +97,12 @@ body, html {
   border-radius: 999px;
   font-size: 1.1rem;
   font-weight: 600;
-  box-shadow: 0 5px 10px rgba(169, 116, 79, 0.3);
+  box-shadow: 0 5px 10px rgba(172, 92, 65, 0.3);
   cursor: pointer;
 }
 
 .hero-form button:hover {
-  background-color: #8a6248;
+  background-color: #ac5c41;
 }
 
 .result {
@@ -124,9 +126,9 @@ body, html {
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(169, 116, 79, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(169, 116, 79, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(172, 92, 65, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(172, 92, 65, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(172, 92, 65, 0); }
 }
 
 /* Phones < 375px */
@@ -203,17 +205,17 @@ body, html {
     margin-top: 0;    
   }
   .hero {
-  background: var(--light); /* soft background */
+  background: url('https://cdn.shopify.com/s/files/1/0943/8042/5563/files/costabrava.jpg?v=1751295186') no-repeat center center;
+      background-size: cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   text-align: center;
-  padding: 2rem 1rem;
-   
+  padding: 4rem 2rem;
+  width: 100%;
   }
-
   .hero-form {
     max-width: 400px;
   }
@@ -222,7 +224,7 @@ body, html {
     font-size: 1.2rem;
   }
 }
-  .hero-content {
+.hero-content {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -250,18 +252,17 @@ body, html {
     max-width: 400px;
     padding: 2rem;
   }
-}  
+}
 </style>
 
 </head>
 <body>
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-text">
-        <h1>Menges prou proteïna?</h1>
-      </div>
-    <form class="hero-form" onsubmit="event.preventDefault(); calculateProtein();">
-      <h3>Comprova-ho 👇</h3>
+     <div class="hero-text">
+<h1>Menges prou proteïna?</h1>
+</div>
+    <form class="hero-form" onsubmit="event.preventDefault(); calculateProtein();">      
       <div class="input-group">
         <input type="number" id="weight" min="30" max="200" placeholder="Pes (kg)" class="animated" />
         <select id="activity">
@@ -321,7 +322,6 @@ body, html {
       <button type="submit">Calcula ara</button>
       <div class="result" id="output">—</div>
     </form>
-    </div>
   </section>
 
   <script>
